@@ -13,23 +13,30 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lib.use.R;
+import com.lib.use.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private FragmentHomeBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                binding.textHome.setText(s);
             }
         });
-        return root;
+
+        binding.signal0.setOnClickListener(view -> binding.imageView.getDrawable().setLevel(105));
+        binding.signal1.setOnClickListener(view -> binding.imageView.getDrawable().setLevel(90));
+        binding.signal2.setOnClickListener(view -> binding.imageView.getDrawable().setLevel(80));
+        binding.signal3.setOnClickListener(view -> binding.imageView.getDrawable().setLevel(60));
+        binding.signal4.setOnClickListener(view -> binding.imageView.getDrawable().setLevel(1));
+        return binding.getRoot();
     }
 }

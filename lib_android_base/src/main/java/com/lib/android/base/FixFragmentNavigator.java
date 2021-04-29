@@ -28,55 +28,77 @@ import java.util.Map;
  *
  *  1.先在布局文件中去掉app:navGraph="@navigation/mobile_navigation"
  *
- *  2.然后来到activity，编写如下代码
- *
- *      void onCreate(Bundle savedInstanceState) {
- *          setContentView(R.layout.activity_navigation);
- *          BottomNavigationView navView = findViewById(R.id.nav_view);
- *
- *           //获取页面容器NavHostFragment
- *           Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
- *           //获取导航控制器
- *           NavController navController = NavHostFragment.findNavController(fragment);
- *           //创建自定义的Fragment导航器
- *           FixFragmentNavigator fragmentNavigator =
- *               new FixFragmentNavigator(this, fragment.getChildFragmentManager(), fragment.getId());
- *           //获取导航器提供者
- *           NavigatorProvider provider = navController.getNavigatorProvider();
- *           //把自定义的Fragment导航器添加进去
- *           provider.addNavigator(fragmentNavigator);
- *           //手动创建导航图
- *           NavGraph navGraph = initNavGraph(provider, fragmentNavigator);
- *           //设置导航图
- *           navController.setGraph(navGraph);
- *           //底部导航设置点击事件
- *           navView.setOnNavigationItemSelectedListener(item -> {
- *               navController.navigate(item.getItemId());
- *               return true;
- *           });
- *       }
- *
- *      //手动创建导航图，把3个目的地添加进来
- *       private NavGraph initNavGraph(NavigatorProvider provider, FixFragmentNavigator fragmentNavigator) {
- *           NavGraph navGraph = new NavGraph(new NavGraphNavigator(provider));
- *
- *           //用自定义的导航器来创建目的地
- *           FragmentNavigator.Destination destination1 = fragmentNavigator.createDestination();
- *           destination1.setId(R.id.navigation_home);
- *           destination1.setClassName(HomeFragment.class.getCanonicalName());
- *           destination1.setLabel(getResources().getString(R.string.title_home));
- *           navGraph.addDestination(destination1);
- *
- *           //省略
- *           navGraph.addDestination(destination2);
- *           //省略
- *           navGraph.addDestination(destination3);
- *
- *           navGraph.setStartDestination(R.id.navigation_home);
- *
- *          return navGraph;
- *       }
- *
+ *  2.用法：
+ *  2.1然后来到activity，编写如下代码
+
+       void onCreate(Bundle savedInstanceState) {
+           setContentView(R.layout.activity_navigation);
+           BottomNavigationView navView = findViewById(R.id.nav_view);
+
+            //获取页面容器NavHostFragment
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            //获取导航控制器
+            NavController navController = NavHostFragment.findNavController(fragment);
+            //创建自定义的Fragment导航器
+            FixFragmentNavigator fragmentNavigator =
+                new FixFragmentNavigator(this, fragment.getChildFragmentManager(), fragment.getId());
+            //获取导航器提供者
+            NavigatorProvider provider = navController.getNavigatorProvider();
+            //把自定义的Fragment导航器添加进去
+            provider.addNavigator(fragmentNavigator);
+            //手动创建导航图
+            NavGraph navGraph = initNavGraph(provider, fragmentNavigator);
+            //设置导航图
+            navController.setGraph(navGraph);
+            //底部导航设置点击事件
+            navView.setOnNavigationItemSelectedListener(item -> {
+                navController.navigate(item.getItemId());
+                return true;
+            });
+        }
+
+        //手动创建导航图，把3个目的地添加进来
+        private NavGraph initNavGraph(NavigatorProvider provider, FixFragmentNavigator fragmentNavigator) {
+            NavGraph navGraph = new NavGraph(new NavGraphNavigator(provider));
+
+            //用自定义的导航器来创建目的地
+            FragmentNavigator.Destination destination1 = fragmentNavigator.createDestination();
+            destination1.setId(R.id.navigation_home);
+            destination1.setClassName(HomeFragment.class.getCanonicalName());
+            destination1.setLabel(getResources().getString(R.string.title_home));
+            navGraph.addDestination(destination1);
+
+            //省略
+            navGraph.addDestination(destination2);
+            //省略
+            navGraph.addDestination(destination3);
+
+            navGraph.setStartDestination(R.id.navigation_home);
+
+           return navGraph;
+        }
+
+    2.2 将FixFragmentNavigator 手动添加到NavController中
+         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+            R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+            .build();
+         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+         NavHostFragment navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+         FixFragmentNavigator fixFragmentNavigator = new FixFragmentNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment);
+         navController.getNavigatorProvider().addNavigator("fixFragment", fixFragmentNavigator);
+         navController.setGraph(R.navigation.mobile_navigation);
+         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+         NavigationUI.setupWithNavController(navView, navController);
+
+        同时在 navigation 对应的xml文件中 将fragment 标签替换为 fixFragment
+        <navigation
+             <fixFragment
+                 android:id="@+id/navigation_home"
+                 android:name="com.lib.use.ui.home.HomeFragment"
+                 android:label="@string/title_home"
+                 tools:layout="@layout/fragment_home" />
+
+
  * *************************************************************************************************************
  *      前边提到的自定义导航器需要指定名字@Navigator.Name("fixFragment")，
  *      是因为不同类型的目的地（页面）需要使用不同的导航器，在NavigatorProvider里有个map存储了多个导航器，
