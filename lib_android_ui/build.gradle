@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
 }
 
 android {
@@ -7,15 +7,13 @@ android {
     buildToolsVersion rootProject.android.buildToolsVersion
 
     defaultConfig {
-        applicationId rootProject.android.applicationId
         minSdkVersion rootProject.android.minSdkVersion
         targetSdkVersion rootProject.android.targetSdkVersion
         versionCode rootProject.android.versionCode
         versionName rootProject.android.versionName
 
-        multiDexEnabled rootProject.android.multiDexEnabled
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -35,18 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation rootProject.depsLibs.appcompact
     implementation rootProject.depsLibs.design
-    implementation rootProject.depsLibs.constraint
-    implementation rootProject.depsLibs.navigation_frag
-    implementation rootProject.depsLibs.navigation_ui
-    implementation rootProject.depsLibs.livedata_ktx
-    implementation rootProject.depsLibs.viewmodel_ktx
-    implementation project(path: ':lib_android_base')
-    implementation project(path: ':lib_android_ui')
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
 }

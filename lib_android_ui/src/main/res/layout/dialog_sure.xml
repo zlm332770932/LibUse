@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:minWidth="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_round_white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="16.5dp"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="Android的起源"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:maxHeight="200dp"
+        android:text=""
+        android:textColor="@color/material_black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#D9D9D9"/>
+
+    <TextView
+        android:id="@+id/tv_sure"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16dp"/>
+
+</LinearLayout>
