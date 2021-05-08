@@ -1,6 +1,7 @@
 package com.lib.use.ui.notifications;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.lib.android.base.tool.FileTool;
 import com.lib.android.ui.dialog.RxDialogEditSureCancel;
 import com.lib.android.ui.dialog.RxDialogSure;
 import com.lib.android.ui.dialog.RxDialogSureCancel;
 import com.lib.use.R;
 import com.lib.use.databinding.FragmentNotificationsBinding;
 
+import java.io.File;
+
 public class NotificationsFragment extends Fragment {
+    private static final String TAG = "NotificationsFragment";
 
     private NotificationsViewModel notificationsViewModel;
     private FragmentNotificationsBinding binding;
@@ -39,6 +44,15 @@ public class NotificationsFragment extends Fragment {
         binding.btnShowDialog.setOnClickListener(view -> showDialogSure());
         binding.button.setOnClickListener(view -> showDialogSureCancel());
         binding.button2.setOnClickListener(view -> showDialogEdit());
+        binding.button4.setOnClickListener(view -> {
+            File rootFile = FileTool.getExternalPath("LibUse");
+            if (!rootFile.exists()){
+                boolean b = rootFile.mkdirs();
+                Log.e(TAG, "create external file: "+ b );
+            }else{
+                FileTool.writeString(rootFile, "test.txt", "文件保存测试");
+            }
+        });
         return binding.getRoot();
     }
 
