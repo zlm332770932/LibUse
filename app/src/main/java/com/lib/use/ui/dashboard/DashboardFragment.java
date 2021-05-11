@@ -1,6 +1,7 @@
 package com.lib.use.ui.dashboard;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -56,6 +57,20 @@ public class DashboardFragment extends Fragment {
 
         binding.btnCreateFile.setOnClickListener(v -> {
             createFile("share.json");
+        });
+
+        binding.btnConnected.setOnClickListener(v -> {
+            binding.imageView2.setImageResource(R.drawable.ic_ble_connected);
+        });
+
+        binding.btnConnecting.setOnClickListener(v -> {
+            binding.imageView2.setImageResource(R.drawable.ic_ble_connecting);
+            AnimationDrawable animationDrawable1 = (AnimationDrawable) binding.imageView2.getDrawable();
+            animationDrawable1.start();
+        });
+
+        binding.btnDisconnect.setOnClickListener(v -> {
+            binding.imageView2.setImageResource(R.drawable.ic_ble_disconnected);
         });
 
         return binding.getRoot();
