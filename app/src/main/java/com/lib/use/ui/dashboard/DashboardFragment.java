@@ -73,6 +73,19 @@ public class DashboardFragment extends Fragment {
             binding.imageView2.setImageResource(R.drawable.ic_ble_disconnected);
         });
 
+        //设置Tint
+        binding.button5.setOnClickListener(v -> {
+            binding.navBtn.setTint(R.color.blue);
+        });
+
+        binding.button6.setOnClickListener(v -> {
+            binding.navBtn.setText("我的");
+        });
+
+        binding.button7.setOnClickListener(v -> {
+            binding.navBtn.setImgResource(R.drawable.right_arrow);
+        });
+
         return binding.getRoot();
     }
 
