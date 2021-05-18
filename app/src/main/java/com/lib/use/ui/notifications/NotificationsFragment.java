@@ -1,5 +1,6 @@
 package com.lib.use.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.lib.android.ui.dialog.RxDialogEditSureCancel;
 import com.lib.android.ui.dialog.RxDialogSure;
 import com.lib.android.ui.dialog.RxDialogSureCancel;
 import com.lib.use.R;
+import com.lib.use.RecylerViewActivity;
 import com.lib.use.databinding.FragmentNotificationsBinding;
 
 import java.io.File;
@@ -52,6 +54,10 @@ public class NotificationsFragment extends Fragment {
             }else{
                 FileTool.writeString(rootFile, "test.txt", "文件保存测试");
             }
+        });
+        binding.button3.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), RecylerViewActivity.class);
+            startActivity(intent);
         });
         return binding.getRoot();
     }
