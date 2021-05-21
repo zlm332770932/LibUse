@@ -1,7 +1,13 @@
 package com.lib.use.ui.dashboard;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.lib.android.base.colorgradient.LinearGradientUtil;
 import com.lib.android.base.ui.FileSelectActivity;
 import com.lib.use.R;
 import com.lib.use.databinding.FragmentDashboardBinding;
@@ -84,6 +92,56 @@ public class DashboardFragment extends Fragment {
 
         binding.button7.setOnClickListener(v -> {
             binding.navBtn.setImgResource(R.drawable.right_arrow);
+        });
+
+        // #FFA726
+        int startColor = Color.rgb(0xFF, 0xA7, 0x26);
+
+        // #4FC3F7
+        int endColor = Color.rgb(0x4F, 0xC3, 0xF7);
+
+        LinearGradientUtil linearGradientUtil = new LinearGradientUtil(startColor, endColor);
+        binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                seekBar.getProgressDrawable().setTint(Color.rgb(255,255,progress));
+                Log.d(TAG, "onProgressChanged: fromuser = " + fromUser);
+                float radio = (float) (progress * 1.0 / 255);
+                Log.d(TAG, "onProgressChanged: radio = " + radio);
+                int color = linearGradientUtil.getColor(radio);
+                Log.d(TAG, "onProgressChanged: color = " + color);
+                seekBar.getThumb().setTint(color);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        LinearGradientUtil linearGradientUtil2 = new LinearGradientUtil(
+                getResources().getColor(R.color.dim_start_color,null),
+                getResources().getColor(R.color.dim_end_color, null));
+        binding.seekbarDim.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.getThumb().setTint(linearGradientUtil2.getColor((float) (progress * 1.0 / 255)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
         });
 
         return binding.getRoot();
