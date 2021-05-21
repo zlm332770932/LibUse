@@ -176,10 +176,12 @@ public class RecylerViewActivity extends AppCompatActivity implements View.OnCli
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
                     Collections.swap(datas, i, i + 1);
+                    Log.d(TAG, "onMove: from " + i + " to " + (i+1));
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
                     Collections.swap(datas, i, i - 1);
+                    Log.d(TAG, "onMove: from " + i + " to " + (i-1));
                 }
             }
             recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
