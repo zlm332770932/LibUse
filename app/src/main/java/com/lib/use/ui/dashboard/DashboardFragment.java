@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -29,12 +30,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.lib.android.base.colorgradient.LinearGradientUtil;
 import com.lib.android.base.ui.FileSelectActivity;
 import com.lib.use.R;
+import com.lib.use.adapter.SpAdapter;
+import com.lib.use.adapter.SpAdapter2;
+import com.lib.use.data.Bean;
 import com.lib.use.databinding.FragmentDashboardBinding;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -115,12 +120,12 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                Log.d(TAG, "onStartTrackingTouch: " + seekBar.getProgress());
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                Log.d(TAG, "onStopTrackingTouch: " + seekBar.getProgress());
             }
         });
 
@@ -143,6 +148,20 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
+        binding.button8.setOnClickListener(v -> {
+            int progress = binding.seekbar.getProgress();
+            binding.seekbar.setProgress((progress + 10) % binding.seekbar.getMax());
+        });
+
+        ArrayList<Bean> sps = new ArrayList<>();
+        for (int i = 0;i < 10 ;i++){
+            sps.add(new Bean("bean " + i, i));
+        }
+//        SpAdapter spAdapter = new SpAdapter(requireActivity(), R.layout.item_sp, sps.toArray(new Bean[sps.size()]));
+//        binding.spinner.setAdapter(spAdapter);
+        SpAdapter2 spAdapter2 = new SpAdapter2(requireActivity(), sps);
+        binding.spinner.setAdapter(spAdapter2);
 
         return binding.getRoot();
     }
